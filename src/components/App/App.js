@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import './App.css';
 import { Route, Routes, matchPath, useLocation } from 'react-router-dom';
 import Header from '../Header/Header';
@@ -15,6 +15,7 @@ function App() {
     const { pathname } = useLocation();
     const isHeaderVisible = matchPath({ path: '/', exact: true }, pathname) || matchPath({ path: '/movies', exact: true }, pathname) || matchPath({ path: '/saved-movies', exact: true }, pathname) || matchPath({ path: '/profile', exact: true }, pathname);
     const isFooterVisible = matchPath({ path: '/', exact: true }, pathname) || matchPath({ path: '/movies', exact: true }, pathname) || matchPath({ path: '/saved-movies', exact: true }, pathname);
+
     return (
         <div className="app">
             {isHeaderVisible && <Header />}
