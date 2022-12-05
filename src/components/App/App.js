@@ -19,7 +19,7 @@ import NotFound from '../NotFound/NotFound';
 function App() {
     const history = useHistory();
     const location = useLocation();
-    const jwt = localStorage.getItem('jwt');
+    // const jwt = localStorage.getItem('jwt');
 
     const [currentUser, setCurrentUser] = useState({});
     const [loggedIn, setLoggedIn] = useState(false);
