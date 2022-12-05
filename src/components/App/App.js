@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import './App.css';
-import {Route, Routes, matchPath, useLocation, useNavigate, Navigate, BrowserRouter} from 'react-router-dom';
+import {Route, Switch, useRouteMatch, useHistory, useLocation, Redirect } from 'react-router-dom';
 import * as mainApi from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
@@ -16,19 +16,21 @@ import Register from '../Register/Register';
 import NotFound from '../NotFound/NotFound';
 
 
-
 function App() {
-    const history = useNavigate();
+    const history = useHistory();
     const location = useLocation();
     const jwt = localStorage.getItem('jwt');
 
     const [currentUser, setCurrentUser] = useState({});
     const [loggedIn, setLoggedIn] = useState(false);
 
-    // вот тут разобаться с роутингом по-новому 6-й версии
-    const { pathname } = useLocation();
-    const isHeaderVisible = matchPath({ path: '/', exact: true }, pathname) || matchPath({ path: '/movies', exact: true }, pathname) || matchPath({ path: '/saved-movies', exact: true }, pathname) || matchPath({ path: '/profile', exact: true }, pathname);
-    const isFooterVisible = matchPath({ path: '/', exact: true }, pathname) || matchPath({ path: '/movies', exact: true }, pathname) || matchPath({ path: '/saved-movies', exact: true }, pathname);
+    // // вот тут разобаться с роутингом = это по-новому 6-й версии
+    // const { pathname } = useLocation();
+    // const isHeaderVisible = matchPath({ path: '/', exact: true }, pathname) || matchPath({ path: '/movies', exact: true }, pathname) || matchPath({ path: '/saved-movies', exact: true }, pathname) || matchPath({ path: '/profile', exact: true }, pathname);
+    // const isFooterVisible = matchPath({ path: '/', exact: true }, pathname) || matchPath({ path: '/movies', exact: true }, pathname) || matchPath({ path: '/saved-movies', exact: true }, pathname);
+
+    const hideHeader = ['/not-found', '/signup', '/signin'];
+    const hideFooter = ['/not-found','/profile', '/signup', '/signin'];
 
     const [profileMessage, setProfileMessage] = useState('');
     const [registerMessage, setRegisterMessage] = useState('');
@@ -52,8 +54,10 @@ function App() {
 
     useEffect(() => {
         if (loggedIn) {
+            // проверяем, есть ли токен в localStorage = потом удалить надо
             console.log('log from use effect');
             console.log(localStorage.getItem('jwt'));
+
             mainApi
                 .getUserInfo(localStorage.getItem('jwt'))
                 .then((user) => setCurrentUser(user))
@@ -70,11 +74,11 @@ function App() {
             .then((res) => {
                 if (res) {
                     onLogin({ email, password });
-                    setRegisterMessage('Регистрация прошла успешно...');
+                    setRegisterMessage('Успешная регистрация...');
                 }
             })
             .catch ((err) => {
-                setRegisterMessage('Одно или несколько полей заполнены неверно. Попробуйте ещё раз.');
+                setRegisterMessage('Что-то пошло не так. Попробуйте ещё раз.');
             })
     }
 
@@ -88,7 +92,7 @@ function App() {
                     .then((response) => {
                         setCurrentUser(response);
                     });
-                setLoginMessage('Авторизация прошла успешно. Вы будете перенаправлены на страницу.');
+                setLoginMessage('Авторизация прошла успешно...');
                 history.push('/movies');
             })
             .catch ((err) => {
@@ -118,65 +122,130 @@ function App() {
     }
 
 
-
     return (
         <CurrentUserContext.Provider value={currentUser}>
         <div className="app">
-            {/*вот тут разобаться с роутингом по-новому 6й версии*/}
-            {isHeaderVisible && <Header />}
-            <BrowserRouter>
-            {/*<Routes>*/}
-            {/*    <Route>*/}
+            {useRouteMatch(hideHeader) ? null : <Header loggedIn={loggedIn}/>}
 
-            {/*    </Route>*/}
-                <Route  path="/"
-                    element={<Main
-                    loggedIn={loggedIn}/>}
-                />
+            <Switch>
+                <Route exact path="/">
+                    <Main loggedIn={loggedIn}/>
+                </Route>
 
-                <Route path="/signin"
-                       element={<Login
-                           onAuth={onLogin}
-                           loginMessage={loginMessage}
-                       />} />
+                <Route path='/signup'>
+                    <Register
+                        onAuth={onRegister}
+                        infoMessage={registerMessage}
+                    />
+                </Route>
 
-                <Route path="/signup"
-                       element={<Register
-                            onAuth={onRegister}
-                            registerMessage={registerMessage}
-                       />} />
+                <Route path='/signin'>
+                    <Login
+                        onAuth={onLogin}
+                        infoMessage={loginMessage}/>
+                </Route>
 
-                <Route path="/movies"
-                       element={<Movies
-                           exact
-                           component={Movies}
-                           loggedIn={loggedIn}
-                       />} />
+                <ProtectedRoute
+                    path='/movies'
+                    exact
+                    component={Movies}
+                    loggedIn={loggedIn}
+                >
+                </ProtectedRoute>
 
-                <Route path="/saved-movies"
-                       element={<SavedMovies
-                            loggedIn={loggedIn}
-                       />} />
 
-                <Route path="/profile"
-                       element={<Profile
-                           exact
-                            component={Profile}
-                            loggedIn={loggedIn}
-                            onUpdateUser={handleUpdateUser}
-                            profileMessage={profileMessage}
-                            signOut={signOut}
-                       />} />
+                <ProtectedRoute path='/saved-movies'>
+                    <SavedMovies loggedIn={loggedIn} />
+                </ProtectedRoute>
 
-                <Route path={"*"}
-                       element={<NotFound
-                       />} />
-            {/*</Routes>*/}
-            </BrowserRouter>
-            {isFooterVisible && <Footer />}
+                <ProtectedRoute
+                    path='/profile'
+                    exact
+                    component={Profile}
+                    loggedIn={loggedIn}
+                    onUpdateUser={handleUpdateUser}
+                    signOut={signOut}
+                    infoMessage={profileMessage}
+                >
+                </ProtectedRoute>
+
+                <Route path='/not-found'>
+                    <NotFound />
+                </Route>
+                <Redirect to='/not-found'/>
+            </Switch>
+
+            {useRouteMatch(hideFooter) ? null : <Footer />}
         </div>
         </CurrentUserContext.Provider>
     );
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+{/*            /!*вот тут разобаться с роутингом по-новому 6й версии*!/*/}
+{/*            {isHeaderVisible && <Header />}*/}
+{/*            <BrowserRouter>*/}
+{/*            /!*<Routes>*!/*/}
+{/*            /!*    <Route>*!/*/}
+
+{/*            /!*    </Route>*!/*/}
+{/*                <Route  path="/"*/}
+{/*                    element={<Main*/}
+{/*                    loggedIn={loggedIn}/>}*/}
+{/*                />*/}
+
+{/*                <Route path="/signin"*/}
+{/*                       element={<Login*/}
+{/*                           onAuth={onLogin}*/}
+{/*                           loginMessage={loginMessage}*/}
+{/*                       />} />*/}
+
+{/*                <Route path="/signup"*/}
+{/*                       element={<Register*/}
+{/*                            onAuth={onRegister}*/}
+{/*                            registerMessage={registerMessage}*/}
+{/*                       />} />*/}
+
+{/*                <Route path="/movies"*/}
+{/*                       element={<Movies*/}
+{/*                           exact*/}
+{/*                           component={Movies}*/}
+{/*                           loggedIn={loggedIn}*/}
+{/*                       />} />*/}
+
+{/*                <Route path="/saved-movies"*/}
+{/*                       element={<SavedMovies*/}
+{/*                            loggedIn={loggedIn}*/}
+{/*                       />} />*/}
+
+{/*                <Route path="/profile"*/}
+{/*                       element={<Profile*/}
+{/*                           exact*/}
+{/*                            component={Profile}*/}
+{/*                            loggedIn={loggedIn}*/}
+{/*                            onUpdateUser={handleUpdateUser}*/}
+{/*                            profileMessage={profileMessage}*/}
+{/*                            signOut={signOut}*/}
+{/*                       />} />*/}
+
+{/*                <Route path={"*"}*/}
+{/*                       element={<NotFound*/}
+{/*                       />} />*/}
+{/*            /!*</Routes>*!/*/}
+{/*            </BrowserRouter>*/}
+{/*            {isFooterVisible && <Footer />}*/}
+{/*        </div>*/}
+{/*        </CurrentUserContext.Provider>*/}
+{/*    );*/}
+{/*}*/}
+
+{/*export default App;*/}

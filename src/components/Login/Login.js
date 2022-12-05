@@ -2,11 +2,11 @@ import React from "react";
 import {Link} from "react-router-dom";
 import "./Login.css";
 import logo from "../../images/logo.svg";
-import {useNavigate} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {FormValidation} from "../../utils/FormValidation";
 
 function Login({onAuth, infoMessage}) {
-    const navigate = useNavigate();
+    const navigate = useHistory();
 
     const {values, handleChange, errors, isValid, resetForm} = FormValidation({});
     const {email, password} = values;

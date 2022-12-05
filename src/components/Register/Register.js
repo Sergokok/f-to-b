@@ -1,11 +1,11 @@
 import React from "react";
 import "./Register.css";
 import logo from "../../images/logo.svg";
-import {useNavigate} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {FormValidation} from "../../utils/FormValidation";
 
 function Register({onAuth, infoMessage}) {
-    const navigate = useNavigate();
+    const navigate = useHistory();
 
     const {values, handleChange, errors, isValid, resetForm} = FormValidation({});
     const {name, email, password} = values;
