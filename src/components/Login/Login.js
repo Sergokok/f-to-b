@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import "./Login.css";
 import logo from "../../images/logo.svg";
 import { useHistory } from "react-router-dom";
-import {FormValidation} from "../../utils/FormValidation";
+import { FormValidation } from "../../utils/FormValidation";
 
 function Login({onAuth, infoMessage}) {
     const navigate = useHistory();
