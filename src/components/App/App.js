@@ -25,7 +25,7 @@ function App() {
     const [currentUser, setCurrentUser] = useState({});
     const [loggedIn, setLoggedIn] = useState(false);
 
-    // вот тут разобаться с роутингом по-новому 6й версии
+    // вот тут разобаться с роутингом по-новому 6-й версии
     const { pathname } = useLocation();
     const isHeaderVisible = matchPath({ path: '/', exact: true }, pathname) || matchPath({ path: '/movies', exact: true }, pathname) || matchPath({ path: '/saved-movies', exact: true }, pathname) || matchPath({ path: '/profile', exact: true }, pathname);
     const isFooterVisible = matchPath({ path: '/', exact: true }, pathname) || matchPath({ path: '/movies', exact: true }, pathname) || matchPath({ path: '/saved-movies', exact: true }, pathname);
@@ -125,10 +125,10 @@ function App() {
             {/*вот тут разобаться с роутингом по-новому 6й версии*/}
             {isHeaderVisible && <Header />}
             <BrowserRouter>
-            <Routes>
-                <Route>
+            {/*<Routes>*/}
+            {/*    <Route>*/}
 
-                </Route>
+            {/*    </Route>*/}
                 <Route  path="/"
                     element={<Main
                     loggedIn={loggedIn}/>}
@@ -171,7 +171,7 @@ function App() {
                 <Route path={"*"}
                        element={<NotFound
                        />} />
-            </Routes>
+            {/*</Routes>*/}
             </BrowserRouter>
             {isFooterVisible && <Footer />}
         </div>
