@@ -39,8 +39,8 @@ function App() {
     useEffect(() => {
         if (localStorage.getItem('jwt')) {
             // проверяем, есть ли токен в localStorage = потом удалить надо
-            console.log('log from use effect');
-            console.log(localStorage.getItem('jwt'));
+            // console.log('log from use effect');
+            // console.log(localStorage.getItem('jwt'));
 
             mainApi
                 .getUserInfo(localStorage.getItem('jwt'))
@@ -55,8 +55,8 @@ function App() {
     useEffect(() => {
         if (loggedIn) {
             // проверяем, есть ли токен в localStorage = потом удалить надо
-            console.log('log from use effect');
-            console.log(localStorage.getItem('jwt'));
+            // console.log('log from use effect');
+            // console.log(localStorage.getItem('jwt'));
 
             mainApi
                 .getUserInfo(localStorage.getItem('jwt'))
