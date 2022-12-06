@@ -1,11 +1,11 @@
 // основной апи для запросов к серверу. Попробовать сделать, чтобы работало с локальным на порту 4000
 // и с // const baseUrl = 'https://api.movies-explorer.nknrw.nomoredomains.icu/';
 // const baseUrl = 'https://api.movies-explorer.nknrw.nomoredomains.icu/';
-const baseUrl = 'http://localhost:4000';
 const headers = {
   'Content-Type': 'application/json',
   'Accept': 'application/json',
 }
+const baseUrl = 'http://localhost:4000';
 
 // следать чтобы выводило ошибки
 const _checkResponse = (res) => {
@@ -102,7 +102,7 @@ export const addMovie = (movie, jwt) => {
       thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
     })
   })
-    .then((res) => _checkResponse(res));
+    .then(this._checkResponse);
 }
 
 // удаление фильма из сохраненных на сервер по токену пользователя
@@ -115,5 +115,5 @@ export const deleteMovie = (movieId, jwt) => {
       'Authorization': `Bearer ${jwt}`,
     },
   })
-    .then((res) => _checkResponse(res));
+    .then(this._checkResponse);
 }

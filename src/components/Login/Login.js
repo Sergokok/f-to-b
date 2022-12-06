@@ -2,11 +2,11 @@ import React from "react";
 // import {Link} from "react-router-dom";
 import "./Login.css";
 import logo from "../../images/logo.svg";
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FormValidation } from "../../utils/FormValidation";
 
 function Login({onAuth, infoMessage}) {
-    const navigate = useHistory();
+    // const navigate = useHistory();
 
     const {values, handleChange, errors, isValid, resetForm} = FormValidation({});
     const {email, password} = values;
@@ -19,10 +19,16 @@ function Login({onAuth, infoMessage}) {
 
     return (
         <section className="login">
-            <img onClick={() => navigate("/")} className="login__logo" src={logo} alt="Логотип"/>
+            <Link to="/">
+                <img className="register__logo" src={logo} alt="Логотип"/>
+            </Link>
+            {/*<img onClick={() => navigate("/")} className="login__logo" src={logo} alt="Логотип"/>*/}
             <h2 className="login__title">Рады видеть!</h2>
 
-            <form className="login__form">
+            <form className="login__form"
+                    onSubmit={handleSubmit}
+                    id="login">
+
                 <label className="login__label">E-mail</label>
                 <input className="login__input"
                        type="email"

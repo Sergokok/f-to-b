@@ -1,11 +1,11 @@
 import React from "react";
 import "./Register.css";
 import logo from "../../images/logo.svg";
-import {useHistory} from "react-router-dom";
+import { Link } from "react-router-dom";
 import {FormValidation} from "../../utils/FormValidation";
 
 function Register({onAuth, infoMessage}) {
-    const navigate = useHistory();
+    // const navigate = useHistory();
 
     const {values, handleChange, errors, isValid, resetForm} = FormValidation({});
     const {name, email, password} = values;
@@ -18,7 +18,11 @@ function Register({onAuth, infoMessage}) {
 
     return (
         <section className="register">
-            <img onClick={() => navigate("/")} className="register__logo" src={logo} alt="Логотип"/>
+            <Link to="/">
+                <img className="register__logo" src={logo} alt="Логотип"/>
+                </Link>
+
+            {/*<img onClick={() => navigate("/")} className="register__logo" src={logo} alt="Логотип"/>*/}
             <h2 className="register__title">Добро пожаловать!</h2>
             <form className="register__form"
                   onSubmit={handleSubmit}
