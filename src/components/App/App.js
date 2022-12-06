@@ -163,7 +163,7 @@ function App() {
                     exact
                     component={Profile}
                     loggedIn={loggedIn}
-                    onUpdateUser={handleUpdateUser}
+                    onEditProfile={handleUpdateUser}
                     signOut={signOut}
                     infoMessage={profileMessage}
                 >
