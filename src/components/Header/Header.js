@@ -1,10 +1,10 @@
 import React from "react";
-import {Link, useHistory, useLocation} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
+import Navigation from "../Navigation/Navigation";
 import "./Header.css";
 import logo from "../../images/logo.svg";
-import Navigation from "../Navigation/Navigation";
 
-function Header() {
+function Header({ loggedIn }) {
     const location = useLocation();
     // const navigate = useHistory();
     return (
@@ -13,7 +13,9 @@ function Header() {
                 <img src={logo} alt="Логотип" className="header__logo" />
             </Link>
             {/*<img onClick={() => navigate("/")} src={logo} alt="Логотип" className="header__logo"/>*/}
-            <Navigation />
+            <Navigation
+                loggedIn={loggedIn}
+            />
         </header>
     );
 }

@@ -112,7 +112,8 @@ const MoviesCardList = ({
                     ) : (
                         <p className={`'movies-card__no-result'${noResults &&
                         'movies-card__no-result_active'}`}
-                        >По вашему запросу ничего не найдено
+                        >
+                            По вашему запросу ничего не найдено
                         </p>
                     )}
                 </ul>

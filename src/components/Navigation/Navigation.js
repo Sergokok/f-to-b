@@ -1,19 +1,21 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./Navigation.css";
 import HamburgerMenu from "../HamburgerMenu/HamburgerMenu";
 
+// const [loggedIn, setLoggedIn] = React.useState(false);
 
 // прописать если залогинен то показывать навигацию с сохраненными фильмами и аккаунтом, а если нет то показывать регистрацию и войти
 
-function Navigation(loggedIn) {
-    const location = useLocation();
+function Navigation({ loggedIn }) {
+    // const location = useLocation();
 
     const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = React.useState(false);
     const handleHamburgerMenuOpen = () => {
         setIsHamburgerMenuOpen(!isHamburgerMenuOpen);
     }
     return (
+        <>
         <section className="navigation">
             {!loggedIn ? (
             <nav className="navigation__list">
@@ -22,10 +24,10 @@ function Navigation(loggedIn) {
             </nav>
             ) : (
             <nav className="navigation__list">
-                    <Link to="/movies" className="navigation__link">Фильмы</Link>
-                    <Link to="/saved-movies" className="navigation__link">Сохранённые фильмы</Link>
-                    <Link to="/profile" className="navigation__link">Аккаунт</Link>
-                    <Link to="/profile" className="navigation__link navigation__link_profile"/>
+                    <NavLink to="/movies" className="navigation__link">Фильмы</NavLink>
+                    <NavLink to="/saved-movies" className="navigation__link">Сохранённые фильмы</NavLink>
+                    <NavLink to="/profile" className="navigation__link">Аккаунт</NavLink>
+                    <NavLink to="/profile" className="navigation__link navigation__link_profile"/>
                 <div className="navigation__menu">
                     <button className="navigation__menu-button" onClick={handleHamburgerMenuOpen}/>
                     <HamburgerMenu
@@ -36,6 +38,7 @@ function Navigation(loggedIn) {
             </nav>
             )}
         </section>
+        </>
     )
 }
 

@@ -9,7 +9,7 @@ function FilterCheckbox({checkClick, isShort}) {
                     className="filter-checkbox__input"
                     type="checkBox"
                     onChange={checkClick}
-                    checked={isShort}/>
+                    checked={isShort}
                 />
             </label>
             <p className="filter-checkbox__text">Короткометражки</p>

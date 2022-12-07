@@ -52,6 +52,7 @@ function App() {
     const [loginMessage, setLoginMessage] = useState('');
 
     useEffect(() => {
+
         if (localStorage.getItem('jwt')) {
             // проверяем, есть ли токен в localStorage = потом удалить надо
             // console.log('log from use effect');
