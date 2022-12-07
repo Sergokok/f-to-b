@@ -1,4 +1,4 @@
-.movies-cards-list {
+.movies-cards__list {
     display: flex;
     flex-direction: column;
     align-items: center;

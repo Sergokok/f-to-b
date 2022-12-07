@@ -5,18 +5,17 @@ import "./MoviesCard.css";
 const MoviesCard = ({
     movie,
     onLike,
-    userId,
     savedMovies,
     onDislike
 }) => {
 
+    const location = useLocation();
     // const { title, imgMovie, duration, isLiked } = movie;
+
     const durationTime =`${Math.floor(movie.duration / 60)}ч ${movie.duration % 60}м`;
 
-    const location = useLocation();
-    const imageCover = location.pathname === '/saved-movies' ? movie.imgMovie : `https://api.nomoreparties.co${movie.imgMovie.url}`;
-
-    const thumbnail = location.pathname === '/saved-movies' ? movie.imgMovie : `$https://api.nomoreparties.co${movie.imgMovie.formats.thumbnail.url}`;
+    const imageCover = location.pathname === '/saved-movies' ? movie.image : `https://api.nomoreparties.co${movie.image.url}`;
+    const thumbnail = location.pathname === '/saved-movies' ? movie.thumbnail : `$https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`;
     // старый лайк
 
     // const cardLikeButtonClassName = `movies-card__like-button ${isLiked  && 'movies-card__like-button_active' }`
