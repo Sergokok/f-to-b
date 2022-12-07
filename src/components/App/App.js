@@ -14,7 +14,7 @@ import Profile from '../Profile/Profile';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import NotFound from '../NotFound/NotFound';
-import {addMovie} from "../../utils/MainApi";
+// import { addMovie } from "../../utils/MainApi";
 
 
 function App() {
@@ -241,7 +241,7 @@ function App() {
                     onDislike={handleDeleteMovie}
                     searchKeyword={searchKeyword}
                     savedMovies={savedMovies}
-                    setMovies={setMovies}
+                    setAllMovies={setAllMovies}
                 >
                 </ProtectedRoute>
 
