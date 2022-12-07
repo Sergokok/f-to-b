@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import "./Navigation.css";
 import HamburgerMenu from "../HamburgerMenu/HamburgerMenu";
 
-function Navigation() {
+function Navigation(loggedIn) {
     const location = useLocation();
 
     const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = React.useState(false);
@@ -12,7 +12,7 @@ function Navigation() {
     }
     return (
         <section className="navigation">
-            {location.pathname === '/' ? (
+            {!loggedIn ? (
             <nav className="navigation__list">
                     <Link to="/signup" className="navigation__link navigation__link_main">Регистрация</Link>
                     <Link to="/signin" className="navigation__link navigation__link_main navigation__link_signin">Войти</Link>
