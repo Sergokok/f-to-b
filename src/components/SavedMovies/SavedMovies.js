@@ -63,7 +63,7 @@ const SavedMovies = ({
         </section>
     );
 }
-
+ export default SavedMovies;
 
 
 // function SavedMovies() {

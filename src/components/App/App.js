@@ -14,6 +14,7 @@ import Profile from '../Profile/Profile';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import NotFound from '../NotFound/NotFound';
+import {addMovie} from "../../utils/MainApi";
 
 
 function App() {
@@ -23,6 +24,19 @@ function App() {
 
     const [currentUser, setCurrentUser] = useState({});
     const [loggedIn, setLoggedIn] = useState(false);
+
+    const [movies, setMovies] = useState([]);
+    const [savedMovies, setSavedMovies] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [allMovies, setAllMovies] = useState(
+        JSON.parse(localStorage.getItem('loadedMovies')) || []
+    );
+    const [filteredMovies, setFilteredMovies] = useState(
+        JSON.parse(localStorage.getItem('filteredMovies')) || []
+    );
+    const [searchKeyword, setSearchKeyword] = useState(
+        localStorage.getItem('searchKeyword') || ''
+    );
 
     // // вот тут разобаться с роутингом = это по-новому 6-й версии
     // const { pathname } = useLocation();
@@ -64,9 +78,19 @@ function App() {
                 .catch((err) => {
                     console.log(`Ошибка получения данных пользователя: ${err}`);
                 });
-
+            mainApi
+                .getMovies(localStorage.getItem('jwt'))
+                .then((res) => {
+                    localStorage.setItem('savedMovies', JSON.stringify(res));
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+            if (localStorage.getItem('savedMovies')) {
+                setSavedMovies(filteredMovies)
+            }
         }
-    }, [loggedIn])
+    }, [loggedIn, filteredMovies])
 
     const onRegister = ({ name, password, email }) => {
         mainApi
@@ -112,13 +136,72 @@ function App() {
             })
     }
 
+    // поиск фильмов по ключевому слову в регистронезависимом режиме
+    const searchMovies = (movie, name) => {
+        return movie.filter((movie) =>
+            movie.nameRU.toLowerCase().includes(name.toLowerCase())
+        );
+    }
+    const handleSearchMovies = (name) => {
+        setIsLoading(true);
+        const newMovies = searchMovies(allMovies, name);
+        setMovies(newMovies);
+        localStorage.setItem('filteredMovies', JSON.stringify(newMovies));
+        setFilteredMovies(newMovies);
+        localStorage.setItem('searchKeyword', name);
+        setSearchKeyword(name);
+        setTimeout(() => setIsLoading(false), 1000);
+    }
+
     const signOut = () => {
         localStorage.removeItem('jwt');
+        localStorage.removeItem('savedMovies');
+        localStorage.removeItem('filteredMovies');
+        localStorage.removeItem('searchKeyword');
+        localStorage.removeItem('loadedMovies');
+        localStorage.removeItem('check-box');
         setLoggedIn(false);
         setCurrentUser({});
         setProfileMessage('');
         setRegisterMessage('');
         setLoginMessage('');
+        setMovies([]);
+        setSavedMovies([]);
+        setFilteredMovies([]);
+        setSearchKeyword('');
+        setIsLoading(false);
+        history.push('/');
+    }
+
+    // сохранение фильма в личном кабинете пользователя и в localStorage
+    const handleSaveMovie = (movie) => {
+        mainApi
+            .addMovie(movie, localStorage.getItem('jwt'))
+            .then((data) => {
+                setSavedMovies([data, ...savedMovies]);
+                localStorage.setItem(
+                    "savedMovies",
+                    JSON.stringify([data, ...savedMovies])
+                );
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
+    const handleDeleteMovie = (movie) => {
+        const savedMovie = savedMovies.find((m) => m.movieId === movie.movieId);
+        mainApi
+            .deleteMovie(savedMovie._id, localStorage.getItem('jwt'))
+            .then(() => {
+                const newMovies = savedMovies.filter(
+                    (m) => m._id !== savedMovie._id
+                );
+                setSavedMovies(newMovies);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
 
@@ -129,7 +212,8 @@ function App() {
 
             <Switch>
                 <Route exact path="/">
-                    <Main loggedIn={loggedIn}/>
+                    <Main />
+                    {/*<Main loggedIn={loggedIn}/>*/}
                 </Route>
 
                 <Route path='/signup'>
@@ -150,12 +234,29 @@ function App() {
                     exact
                     component={Movies}
                     loggedIn={loggedIn}
+                    isLoading={isLoading}
+                    movies={movies}
+                    onSubmit={handleSearchMovies}
+                    onLike={handleSaveMovie}
+                    onDislike={handleDeleteMovie}
+                    searchKeyword={searchKeyword}
+                    savedMovies={savedMovies}
+                    setMovies={setMovies}
                 >
                 </ProtectedRoute>
 
 
-                <ProtectedRoute path='/saved-movies'>
-                    <SavedMovies loggedIn={loggedIn} />
+                <ProtectedRoute
+                    path='/saved-movies'
+                    exact
+                    component={SavedMovies}
+                    loggedIn={loggedIn}
+                    isLoading={isLoading}
+                    onDislike={handleDeleteMovie}
+                    savedMovies={savedMovies}
+                    setKeyword={setSearchKeyword}
+                >
+{/*<SavedMovies loggedIn={loggedIn} />*/}
                 </ProtectedRoute>
 
                 <ProtectedRoute
