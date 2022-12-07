@@ -21,14 +21,14 @@ const Movies = ({
     const [isShort, setIsShort] = useState(false);
     const checkClick = () => {
         setCheckActive(!checkActive);
-        localStorage.setItem("check-box", !checkActive);
+        localStorage.setItem("checkBox", !checkActive);
     }
 
     const filterMoviesShort = (filterMovies) =>
         filterMovies.filter((m) => m.duration < 40);
 
     useEffect(() => {
-        const checkBoxLocal = localStorage.getItem("check-box");
+        const checkBoxLocal = localStorage.getItem("checkBox");
         if (checkBoxLocal === "true") {
             setIsShort(isShort);
             setCheckActive(true);

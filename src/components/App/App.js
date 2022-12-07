@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import './App.css';
 import {Route, Switch, useRouteMatch, useHistory, useLocation, Redirect } from 'react-router-dom';
+
 import * as mainApi from '../../utils/MainApi';
+
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
@@ -20,7 +22,6 @@ import NotFound from '../NotFound/NotFound';
 function App() {
     const history = useHistory();
     const location = useLocation();
-    // const jwt = localStorage.getItem('jwt');
 
     const [currentUser, setCurrentUser] = useState({});
     const [loggedIn, setLoggedIn] = useState(false);
@@ -113,8 +114,8 @@ function App() {
                 localStorage.setItem('jwt', data.token);
                 setLoggedIn(true);
                 mainApi.getUserInfo(localStorage.getItem('jwt'))
-                    .then((response) => {
-                        setCurrentUser(response);
+                    .then((res) => {
+                        setCurrentUser(res);
                     });
                 setLoginMessage('Авторизация прошла успешно...');
                 history.push('/movies');
@@ -159,17 +160,18 @@ function App() {
         localStorage.removeItem('filteredMovies');
         localStorage.removeItem('searchKeyword');
         localStorage.removeItem('loadedMovies');
-        localStorage.removeItem('check-box');
+        localStorage.removeItem('checkBox');
         setLoggedIn(false);
         setCurrentUser({});
         setProfileMessage('');
         setRegisterMessage('');
         setLoginMessage('');
+        setIsLoading(false);
+        setAllMovies([]);
         setMovies([]);
         setSavedMovies([]);
         setFilteredMovies([]);
         setSearchKeyword('');
-        setIsLoading(false);
         history.push('/');
     }
 
@@ -206,9 +208,13 @@ function App() {
 
 
     return (
-        <CurrentUserContext.Provider value={currentUser}>
+        <CurrentUserContext.Provider
+            value={currentUser}>
+
         <div className="app">
-            {useRouteMatch(hideHeader) ? null : <Header loggedIn={loggedIn}/>}
+            {useRouteMatch(hideHeader) ? null :
+                ( <Header loggedIn={loggedIn}/>
+                )}
 
             <Switch>
                 <Route exact path="/">
@@ -244,7 +250,6 @@ function App() {
                     setAllMovies={setAllMovies}
                 >
                 </ProtectedRoute>
-
 
                 <ProtectedRoute
                     path='/saved-movies'

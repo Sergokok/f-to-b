@@ -3,6 +3,9 @@ import { Link, useLocation } from "react-router-dom";
 import "./Navigation.css";
 import HamburgerMenu from "../HamburgerMenu/HamburgerMenu";
 
+
+// прописать если залогинен то показывать навигацию с сохраненными фильмами и аккаунтом, а если нет то показывать регистрацию и войти
+
 function Navigation(loggedIn) {
     const location = useLocation();
 

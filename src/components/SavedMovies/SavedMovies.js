@@ -20,11 +20,11 @@ const SavedMovies = ({
 
     const checkClick = () => {
         setCheckActive(!checkActive);
-        localStorage.setItem("check-box", !checkActive);
+        localStorage.setItem("checkBox", !checkActive);
     };
 
     useEffect(() => {
-        const checkLocal = localStorage.getItem("check-box");
+        const checkLocal = localStorage.getItem("checkBox");
         if (checkLocal === "true") {
             setIsShort(isShort);
             setCheckActive(true);

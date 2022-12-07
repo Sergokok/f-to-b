@@ -58,7 +58,7 @@ const Profile = ({onEditProfile, signOut, infoMessage}) => {
                   name='profile-form'
                   onSubmit={onFormSubmit}
                   id='profile'>
-                >
+
                 <h2 className='profile__title'>Привет,{currentUser.name}!</h2>
                 <div className='profile__fieldset'>
                     <label className='profile__label'>Имя
