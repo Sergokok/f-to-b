@@ -58,14 +58,14 @@
 
 @media (max-width: 768px) {
 
-    .movies-cards-list {
+    .movies-cards__list {
         padding: 80px 30px;
     }
 }
 
 @media (max-width: 350px) {
 
-    .movies-cards-list {
+    .movies-cards__list {
         padding: 40px 10px 80px;
     }
 

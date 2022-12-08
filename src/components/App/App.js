@@ -16,7 +16,7 @@ import Profile from '../Profile/Profile';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import NotFound from '../NotFound/NotFound';
-// import { addMovie } from "../../utils/MainApi";
+// import { saveMovie } from "../../utils/MainApi";
 
 
 function App() {
@@ -179,7 +179,7 @@ function App() {
     // сохранение фильма в личном кабинете пользователя и в localStorage
     const handleSaveMovie = (movie) => {
         mainApi
-            .addMovie(movie, localStorage.getItem('jwt'))
+            .saveMovie(movie, localStorage.getItem('jwt'))
             .then((data) => {
                 setSavedMovies([data, ...savedMovies]);
                 localStorage.setItem(

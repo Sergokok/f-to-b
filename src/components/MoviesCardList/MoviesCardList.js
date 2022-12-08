@@ -63,8 +63,8 @@ const MoviesCardList = ({
 
     if(location.pathname === '/movies') {
         return (
-            <section className='movies-card'>
-                <ul className='movies-card__container'>
+            <section className='movies-cards__list'>
+                <ul className='movies-cards-list__list'>
                     {movies.length ? (
                         moviesToShow.map((movie) =>
                             <MoviesCard

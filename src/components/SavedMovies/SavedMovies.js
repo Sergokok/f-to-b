@@ -1,15 +1,15 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, {useEffect, useState, useMemo} from "react";
 import Preloader from "../Preloader/Preloader";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import "./SavedMovies.css";
 
 const SavedMovies = ({
-    isLoading,
-    savedMovies,
-    onDislike,
-    searchKeyword,
-}) => {
+                         isLoading,
+                         savedMovies,
+                         onDislike,
+                         searchKeyword,
+                     }) => {
     const [checkActive, setCheckActive] = useState(false);
     const [isShort, setIsShort] = useState(false);
     const [filter, setFilter] = useState("");
@@ -53,17 +53,19 @@ const SavedMovies = ({
                 searchKeyword={searchKeyword}
                 isShort={checkActive}
             />
-            {isLoading && <Preloader />}
-            {noResults && (
+            {isLoading && <Preloader/>}
+            {!isLoading && (
                 <MoviesCardList
-                    movies={filterMoviesShort(filterMovies)}
+                    movies={checkActive ? filterMoviesShort(filterMovies) : filterMovies}
                     onDislike={onDislike}
+                    savedMovies={savedMovies}
+                    noResults={noResults}
                 />
             )}
         </section>
     );
 }
- export default SavedMovies;
+export default SavedMovies;
 
 
 // function SavedMovies() {

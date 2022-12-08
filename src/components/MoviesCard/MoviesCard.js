@@ -17,8 +17,8 @@ const MoviesCard = ({
     const imageCover = location.pathname === '/saved-movies' ? movie.image : `https://api.nomoreparties.co${movie.image.url}`;
     const thumbnail = location.pathname === '/saved-movies' ? movie.thumbnail : `$https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`;
     // старый лайк
-
     // const cardLikeButtonClassName = `movies-card__like-button ${isLiked  && 'movies-card__like-button_active' }`
+
     // новый лайк
 
     const isLiked = savedMovies.some((i) => i.movieId === movie.id);
@@ -68,19 +68,19 @@ const MoviesCard = ({
                     </a>
                 )}
 
-                {location.pathname === '/movies' && (
-                <a
-                    className="movies-card__trailer-link"
-                    target={'_blank'}
-                    rel='noreferrer'
-                    href={movie.trailer}>
-                    <img
-                        className="movies-card__img"
-                        src={`${imageCover}`}
-                        alt={`Обложка фильма: ${thumbnail}`}
-                    />
-                </a>
-                )}
+                {/*{location.pathname === '/movies' && (*/}
+                {/*<a*/}
+                {/*    className="movies-card__trailer-link"*/}
+                {/*    target={'_blank'}*/}
+                {/*    rel='noreferrer'*/}
+                {/*    href={movie.trailer}>*/}
+                {/*    <img*/}
+                {/*        className="movies-card__img"*/}
+                {/*        src={`${imageCover}`}*/}
+                {/*        alt={`Обложка фильма: ${thumbnail}`}*/}
+                {/*    />*/}
+                {/*</a>*/}
+                {/*)}*/}
 
                 <div className="movies-card__info">
                     <h2 className="movies-card__title">{movie.nameRU}</h2>
